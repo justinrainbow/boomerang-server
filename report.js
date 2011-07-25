@@ -7,7 +7,8 @@ var VERSION = '0.1',
     url = require('url'),
     http = require('http'),
     mongo = require('mongodb'),
-    querystring = require('querystring');
+    querystring = require('querystring'),
+    Table = require('cli-table');
 
 var host = 'pe-macmini.local', port = mongo.Connection.DEFAULT_PORT,
     
@@ -18,6 +19,11 @@ var host = 'pe-macmini.local', port = mongo.Connection.DEFAULT_PORT,
     ], { 'rs_name': 'mongoset' }),
     db = new mongo.Db('boomerang', servers, { native_parser:true });
 
+var table = new Table({ 
+    head: ['Site', 'Startup', 'Dom loading', 'Finished']
+  , colWidths: [20, 20, 20, 20]
+});
+
 db.open(function(err, db) {
 
   db.collection('beacon', function(err, collection) {
@@ -25,15 +31,17 @@ db.open(function(err, db) {
       cursor.toArray(function(err, docs) { 
         console.log("Found %s docs", docs.length);
         docs.forEach(function(doc){
-          console.log("%s:  startup: %s, domloading: %s, finished: %s",
-            doc.test_site,
-            doc.nt_res_st - doc.nt_req_st,
-            doc.nt_domloading - doc.nt_req_st,
-            doc.nt_res_end - doc.nt_req_st
-          );
+          table.push([
+              doc.test_site,
+              doc.nt_res_st - doc.nt_req_st,
+              doc.nt_domloading - doc.nt_req_st,
+              doc.nt_res_end - doc.nt_req_st
+          ])
         });
           
         db.close();
+        
+        console.log(table.toString());
           
       });
       
