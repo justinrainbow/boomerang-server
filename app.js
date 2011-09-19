@@ -43,7 +43,10 @@ app.configure('production', function(){
 
 app.get('/', function(req, res){
   res.render('index', {
-    title: 'Express'
+    title: 'Express',
+    locals: {
+        base: 'http://localhost:3000'
+    }
   });
 });
 
