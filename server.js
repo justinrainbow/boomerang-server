@@ -7,7 +7,10 @@ var VERSION = '0.1',
     url = require('url'),
     http = require('http'),
     mongo = require('mongodb'),
-    querystring = require('querystring');
+    querystring = require('querystring'),
+    express = require('express');
+
+var app = express.createServer();
 
 var host = 'pe-macmini.local', port = mongo.Connection.DEFAULT_PORT,
     

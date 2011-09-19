@@ -1,0 +1,3 @@
+[submodule "vendor/boomerang"]
+	path = vendor/boomerang
+	url = https://github.com/yahoo/boomerang.git
